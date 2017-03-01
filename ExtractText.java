@@ -88,13 +88,29 @@ public class ExtractText {
 
                   //removing all punctuation
                   //remove all camel case
-                  writer.println(line.replaceAll(
-                          String.format("\\d","%s|%s|%s","(?<=[A-Z])(?=[A-Z])","(?<=[^A-Z])(?=[A-Z])","(?<=[A-Za-z])(?=[^A-Za-z])"), " "));
-          }
 
-              reader.close();
-              writer.close();
-      }
+                  // String[] words = line.split(" ");
+                  //
+                  // // for(String s : words)
+                  // {
+                  //   writer.println(splitCamelCase(s));
+                  // }
+                  writer.println(splitCamelCase(line).replaceAll("[0-9]",""));
+
+
+          }
+          reader.close();
+          writer.close();
+    }
+  }
+
+    public static String splitCamelCase(String s) {
+      return s.replaceAll(
+      String.format("%s|%s|%s",
+         "(?<=[A-Z])(?=[A-Z][a-z]+)",
+         "(?<=[^A-Z])(?=[A-Z])",
+         "(?<=[A-Za-z])(?=[^A-Za-z])"
+                    )," ");
     }
 
     //removes the files that aren't .m source code
