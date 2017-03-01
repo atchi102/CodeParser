@@ -13,27 +13,71 @@ public class ExtractText {
         //removeUnnecessaryFiles();
 
         //stripping punctuation and converts camel case for .m files
-        File f = new File("/Users/abigailatchison/Desktop/MLAT/IDFProgram");
-        File [] contents = f.listFiles();
+        iterateFiles();
+        //removeIntermediateFiles();
+    }
 
-        int numFiles=contents.length;
+    public static void iterateFiles() throws IOException
+    {
+      // File f = new File("/Users/abigailatchison/Desktop/MLAT/Files/IDFProgram");
+      // File [] contents = f.listFiles();
+      //
+      // int numFiles=contents.length;
+      //
+      // for (int k=0; k<numFiles;++k)
+      // {
+      //     String name = contents[k].getAbsolutePath();
+      //     if (!name.endsWith(".m"))
+      //         continue;
+      //     else removePunctuation(name);
+      // }
 
-        for (int k=0; k<numFiles;++k)
-        {
-            String name = contents[k].getAbsolutePath();
-            if (!name.endsWith(".m"))
-                continue;
-            else readComments(name);
-        }
-        removeIntermediateFiles();
+
+      File f = new File("/Users/abigailatchison/Desktop/MLAT/Files");
+       File [] contents = f.listFiles();
+
+       int numFilesInFiles=contents.length;
+
+       for (int k=0; k<numFilesInFiles;++k)
+       {
+           String name = contents[k].getAbsolutePath();
+
+           if (name.endsWith("/.DS_Store"))
+               continue;
+
+           File dir = new File(name);
+           File [] dirContents = dir.listFiles();
+
+           int numFilesInDir = dirContents.length;
+
+           for (int i=0; i< numFilesInDir; ++i)
+           {
+               String fileName = dirContents[i].getAbsolutePath();
+
+
+               if (fileName.endsWith("/.DS_Store"))
+                   continue;
+
+               System.out.println(fileName);
+              //  int index = fileName.indexOf("/Files");
+              //  String indexPath = fileName.substring(0, index) + "/Output" + foldersName.substring(index);
+
+               if (!fileName.endsWith(".m"))
+                   continue;
+
+               else
+                   removePunctuation(fileName);
+           }
+
+       }
     }
 
     //takes comments from MATLAB source code, removes punctuation and stop words, puts all information into txt file
-    public static void readComments(String fileName) throws IOException
+    public static void removePunctuation(String fileName) throws IOException
     {
         try(BufferedReader reader = new BufferedReader(new FileReader(fileName))){
 
-            File newFile = new File(fileName + ".txt");
+            File newFile = new File(fileName + "commentsOut.txt");
             PrintWriter writer = new PrintWriter(newFile);
             while(true)
             {
@@ -50,68 +94,46 @@ public class ExtractText {
                 reader.close();
                 writer.close();
                 removeCamelCase(newFile.getAbsolutePath());
-                removeStopWords(newFile.getAbsolutePath());
+
         }
 
 
     }
 
-    //removes the intermediate txt files so that there aren't multiple unneeded files and renames finished file
-    public static void removeIntermediateFiles() throws IOException
-    {
-        File f = new File("/Users/abigailatchison/Desktop/MLAT/IDFProgram");
-        File [] contents = f.listFiles();
 
-        for (int k=0; k<contents.length; ++k)
+        public static void removeCamelCase(String fileName) throws IOException
         {
-            String fileName = contents[k].getAbsolutePath();
-            if(fileName.endsWith(".m.txt"))
-            {
-                System.out.println("Deleteing " + fileName);
-                contents[k].delete();
-            }
-        }
-    }
+          try(BufferedReader reader = new BufferedReader(new FileReader(fileName))){
 
-    public static void removeCamelCase(String fileName) throws IOException
-    {
-      try(BufferedReader reader = new BufferedReader(new FileReader(fileName))){
+              File newFile = new File(fileName + "camelCaseOut.txt");
+              PrintWriter writer = new PrintWriter(newFile);
+              while(true)
+              {
+                  String line = reader.readLine();
+                  if(line == null){
+                      break;
+                  }
+                      writer.println(splitCamelCase(line).replaceAll("[0-9]",""));
 
-          File newFile = new File(fileName + ".txt");
-          PrintWriter writer = new PrintWriter(newFile);
-          while(true)
-          {
-              String line = reader.readLine();
-              if(line == null){
-                  break;
+
               }
-
-                  //removing all punctuation
-                  //remove all camel case
-
-                  // String[] words = line.split(" ");
-                  //
-                  // // for(String s : words)
-                  // {
-                  //   writer.println(splitCamelCase(s));
-                  // }
-                  writer.println(splitCamelCase(line).replaceAll("[0-9]",""));
+              reader.close();
+              writer.close();
+              removeStopWords(moveToOutputFile(newFile.getAbsolutePath()),newFile.getAbsolutePath());
+        }
+      }
 
 
+          public static String splitCamelCase(String s) {
+            return s.replaceAll(
+            String.format("%s|%s|%s",
+               "(?<=[A-Z])(?=[A-Z][a-z]+)",
+               "(?<=[^A-Z])(?=[A-Z])",
+               "(?<=[A-Za-z])(?=[^A-Za-z])"
+                          )," ");
           }
-          reader.close();
-          writer.close();
-    }
-  }
 
-    public static String splitCamelCase(String s) {
-      return s.replaceAll(
-      String.format("%s|%s|%s",
-         "(?<=[A-Z])(?=[A-Z][a-z]+)",
-         "(?<=[^A-Z])(?=[A-Z])",
-         "(?<=[A-Za-z])(?=[^A-Za-z])"
-                    )," ");
-    }
+
 
     //removes the files that aren't .m source code
     // public static void removeUnnecessaryFiles() throws IOException
@@ -129,12 +151,15 @@ public class ExtractText {
     //         }
     //     }
     // }
-
-
-    public static void removeStopWords(String nFile) throws IOException
+    public static String moveToOutputFile(String nFile)
     {
-        int index = nFile.lastIndexOf('/');
-        String indexPath = nFile.substring(0, index) + "/Output/" + nFile.substring(index);
+      int index = nFile.indexOf("/Files");
+      String indexPath = nFile.substring(0, index) + "/Output/" + nFile.substring(nFile.lastIndexOf('/'),nFile.indexOf(".m"))+".txt";
+      return indexPath;
+    }
+
+    public static void removeStopWords(String outputFilePath, String nFile) throws IOException
+    {
 
 
         //link to stop words: http://www.ranks.nl/stopwords
@@ -145,7 +170,7 @@ public class ExtractText {
         System.out.println("Name = "+nFile);
         BufferedReader brCheck = new BufferedReader(new FileReader(nFile));
 
-        File newFile = new File(indexPath);
+        File newFile = new File(outputFilePath);
 
         PrintWriter writer = new PrintWriter(newFile);
         String word = "";
@@ -177,5 +202,22 @@ public class ExtractText {
         writer.close();
 
 
+    }
+
+    //removes the intermediate txt files so that there aren't multiple unneeded files and renames finished file
+    public static void removeIntermediateFiles() throws IOException
+    {
+        File f = new File("/Users/abigailatchison/Desktop/MLAT/Files/IDFProgram");
+        File [] contents = f.listFiles();
+
+        for (int k=0; k<contents.length; ++k)
+        {
+            String fileName = contents[k].getAbsolutePath();
+            if(fileName.endsWith(".m.txt"))
+            {
+                System.out.println("Deleteing " + fileName);
+                contents[k].delete();
+            }
+        }
     }
 }
