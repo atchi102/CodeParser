@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.TreeSet;
+import java.nio.file.*;
 
 import java.io.*;
 
@@ -9,68 +10,78 @@ public class ExtractText {
 
     public static void main(String[] args) throws IOException
     {
-        //removing files that aren't .m
-        //removeUnnecessaryFiles();
 
-        //stripping punctuation and converts camel case for .m files
         iterateFiles();
         //removeIntermediateFiles();
     }
 
     public static void iterateFiles() throws IOException
     {
-      // File f = new File("/Users/abigailatchison/Desktop/MLAT/Files/IDFProgram");
-      // File [] contents = f.listFiles();
       //
-      // int numFiles=contents.length;
+      // File f = new File("/Users/abigailatchison/Desktop/MLAT/Files");
+      //  File [] contents = f.listFiles();
       //
-      // for (int k=0; k<numFiles;++k)
-      // {
-      //     String name = contents[k].getAbsolutePath();
-      //     if (!name.endsWith(".m"))
-      //         continue;
-      //     else removePunctuation(name);
-      // }
-
-
-      File f = new File("/Users/abigailatchison/Desktop/MLAT/Files");
-       File [] contents = f.listFiles();
-
-       int numFilesInFiles=contents.length;
-
-       for (int k=0; k<numFilesInFiles;++k)
-       {
-           String name = contents[k].getAbsolutePath();
-
-           if (name.endsWith("/.DS_Store"))
-               continue;
-
-           File dir = new File(name);
-           File [] dirContents = dir.listFiles();
-
-           int numFilesInDir = dirContents.length;
-
-           for (int i=0; i< numFilesInDir; ++i)
-           {
-               String fileName = dirContents[i].getAbsolutePath();
-
-
-               if (fileName.endsWith("/.DS_Store"))
-                   continue;
-
-               System.out.println(fileName);
-              //  int index = fileName.indexOf("/Files");
-              //  String indexPath = fileName.substring(0, index) + "/Output" + foldersName.substring(index);
-
-               if (!fileName.endsWith(".m"))
-                   continue;
-
-               else
-                   removePunctuation(fileName);
-           }
-
-       }
+      //  int numFilesInFiles=contents.length;
+      //
+      //  for (int k=0; k<numFilesInFiles;++k)
+      //  {
+      //      String name = contents[k].getAbsolutePath();
+      //
+      //      if (name.endsWith("/.DS_Store"))
+      //          continue;
+      //
+      //      File dir = new File(name);
+      //      File [] dirContents = dir.listFiles();
+      //
+      //      int numFilesInDir = dirContents.length;
+      //
+      //      for (int i=0; i< numFilesInDir; ++i)
+      //      {
+      //          String fileName = dirContents[i].getAbsolutePath();
+      //
+      //
+      //          if (fileName.endsWith("/.DS_Store"))
+      //              continue;
+      //
+      //          System.out.println(fileName);
+      //         //  int index = fileName.indexOf("/Files");
+      //         //  String indexPath = fileName.substring(0, index) + "/Output" + foldersName.substring(index);
+      //
+      //          if (!fileName.endsWith(".m"))
+      //              continue;
+      //
+      //          else
+      //              removePunctuation(fileName);
+      //      }
+      //
+      //  }
+      parseDir("/Users/abigailatchison/Desktop/MLAT/Files");
     }
+
+  public static void parseDir(String path) throws IOException
+  {
+      File currentDir = new File(path);
+      File[] contents = currentDir.listFiles();
+      int numFilesInDir = contents.length;
+
+      for(int k=0; k<numFilesInDir; ++k)
+      {
+        String contentName = contents[k].getAbsolutePath();
+
+        if(contentName.endsWith("/.DS_Store"))
+          continue;
+
+        Path file = new File(contentName).toPath();
+
+        if(Files.isDirectory(file))
+        {
+          parseDir(contentName);
+          continue;
+        }
+        else if(contentName.endsWith(".m"))
+          removePunctuation(contentName);
+      }
+  }
 
     //takes comments from MATLAB source code, removes punctuation and stop words, puts all information into txt file
     public static void removePunctuation(String fileName) throws IOException
