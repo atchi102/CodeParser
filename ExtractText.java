@@ -11,51 +11,8 @@ public class ExtractText {
     public static void main(String[] args) throws IOException
     {
 
-        iterateFiles();
+        parseDir("/Users/abigailatchison/Desktop/MLAT/Files");
         //removeIntermediateFiles();
-    }
-
-    public static void iterateFiles() throws IOException
-    {
-      //
-      // File f = new File("/Users/abigailatchison/Desktop/MLAT/Files");
-      //  File [] contents = f.listFiles();
-      //
-      //  int numFilesInFiles=contents.length;
-      //
-      //  for (int k=0; k<numFilesInFiles;++k)
-      //  {
-      //      String name = contents[k].getAbsolutePath();
-      //
-      //      if (name.endsWith("/.DS_Store"))
-      //          continue;
-      //
-      //      File dir = new File(name);
-      //      File [] dirContents = dir.listFiles();
-      //
-      //      int numFilesInDir = dirContents.length;
-      //
-      //      for (int i=0; i< numFilesInDir; ++i)
-      //      {
-      //          String fileName = dirContents[i].getAbsolutePath();
-      //
-      //
-      //          if (fileName.endsWith("/.DS_Store"))
-      //              continue;
-      //
-      //          System.out.println(fileName);
-      //         //  int index = fileName.indexOf("/Files");
-      //         //  String indexPath = fileName.substring(0, index) + "/Output" + foldersName.substring(index);
-      //
-      //          if (!fileName.endsWith(".m"))
-      //              continue;
-      //
-      //          else
-      //              removePunctuation(fileName);
-      //      }
-      //
-      //  }
-      parseDir("/Users/abigailatchison/Desktop/MLAT/Files");
     }
 
   public static void parseDir(String path) throws IOException
@@ -80,8 +37,12 @@ public class ExtractText {
         }
         else if(contentName.endsWith(".m"))
           removePunctuation(contentName);
+
+        removeIntermediateFiles(path);
       }
+
   }
+
 
     //takes comments from MATLAB source code, removes punctuation and stop words, puts all information into txt file
     public static void removePunctuation(String fileName) throws IOException
@@ -216,15 +177,15 @@ public class ExtractText {
     }
 
     //removes the intermediate txt files so that there aren't multiple unneeded files and renames finished file
-    public static void removeIntermediateFiles() throws IOException
+    public static void removeIntermediateFiles(String path) throws IOException
     {
-        File f = new File("/Users/abigailatchison/Desktop/MLAT/Files/IDFProgram");
+        File f = new File(path);
         File [] contents = f.listFiles();
 
         for (int k=0; k<contents.length; ++k)
         {
             String fileName = contents[k].getAbsolutePath();
-            if(fileName.endsWith(".m.txt"))
+            if(fileName.contains("mcommentsOut"))
             {
                 System.out.println("Deleteing " + fileName);
                 contents[k].delete();
