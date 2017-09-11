@@ -51,7 +51,6 @@ public class ExtractText {
 
   }
 
-
     //Removes punctuation from file and place into a file ending with commentsOut.txt
     public static void removePunctuation(String fileName) throws IOException
     {
@@ -65,19 +64,14 @@ public class ExtractText {
                 if(line == null){
                     break;
                 }
-
                     //removing all punctuation
                     //remove all camel case
                     writer.println(line.replaceAll("\\W", " ").replaceAll("_"," "));
             }
-
                 reader.close();
                 writer.close();
                 removeCamelCase(newFile.getAbsolutePath());
-
         }
-
-
     }
 
     //Convert all camal case to regular case and place into a text file ending with camelCaseOut.txt
@@ -94,8 +88,6 @@ public class ExtractText {
                       break;
                   }
                       writer.println(splitCamelCase(line).replaceAll("[0-9]",""));
-
-
               }
               reader.close();
               writer.close();
@@ -133,13 +125,10 @@ public class ExtractText {
     //Remove all stop words in file and place in output file
     public static void removeStopWords(String outputFilePath, String nFile) throws IOException
     {
-
-
         //link to stop words: http://www.ranks.nl/stopwords
         TreeSet <String> ts = new TreeSet <String>();
         //TODO: file location of stopwords
         BufferedReader brSet = new BufferedReader(new FileReader("/home/ott109/stopWords.txt"));
-
         BufferedReader brCheck = new BufferedReader(new FileReader(nFile));
 
         File newFile = new File(outputFilePath);
@@ -156,7 +145,6 @@ public class ExtractText {
         while((line=brCheck.readLine())!=null)
         {
             String[] toks = line.split("[\\s]+");
-
             for(int k=0; k<toks.length; ++k)
             {
 
@@ -166,13 +154,9 @@ public class ExtractText {
                 }
             }
         }
-
-
         brSet.close();
         brCheck.close();
         writer.close();
-
-
     }
 
     //Remove the intermediate txt files that were created in the cleaning process
