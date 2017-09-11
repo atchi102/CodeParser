@@ -13,7 +13,7 @@ public class ExtractText {
     public static void main(String[] args) throws IOException
     {
         //TODO: File path of the directory you want to parse
-        parseDir("/home/ott109/M3");
+        parseDir("./M3");
     }
 
   public static void parseDir(String path) throws IOException
