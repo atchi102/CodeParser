@@ -13,7 +13,7 @@ public class ExtractText {
     public static void main(String[] args) throws IOException
     {
 
-        parseDir("/Users/abigailatchison/Desktop/MLAT/Files");
+        parseDir("/home/ott109/M3");
     }
 
   public static void parseDir(String path) throws IOException
@@ -119,7 +119,7 @@ public class ExtractText {
     //Create path to the output file
     public static String moveToOutputFile(String nFile)
     {
-      int index = nFile.indexOf("/Files");
+      int index = nFile.indexOf("/M3");
       String indexPath = nFile.substring(0, index) + "/Output/" + nFile.substring(nFile.lastIndexOf('/'),nFile.indexOf(".m"))+".txt";
       return indexPath;
     }
@@ -131,7 +131,7 @@ public class ExtractText {
 
         //link to stop words: http://www.ranks.nl/stopwords
         TreeSet <String> ts = new TreeSet <String>();
-        BufferedReader brSet = new BufferedReader(new FileReader("/Users/abigailatchison/Desktop/MLAT/stopWords.txt"));
+        BufferedReader brSet = new BufferedReader(new FileReader("/home/ott109/stopWords.txt"));
 
         BufferedReader brCheck = new BufferedReader(new FileReader(nFile));
 
