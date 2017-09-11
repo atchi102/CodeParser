@@ -12,7 +12,7 @@ public class ExtractText {
 
     public static void main(String[] args) throws IOException
     {
-
+        //TODO: File path of the directory you want to parse
         parseDir("/home/ott109/M3");
     }
 
@@ -39,6 +39,7 @@ public class ExtractText {
           parseDir(contentName);
           continue;
         }
+        //TODO: extension of the file you want to parse (.cpp etc)
         else if(contentName.endsWith(".m")) //if the file is a .m file start program on it
           removePunctuation(contentName);
 
@@ -119,7 +120,12 @@ public class ExtractText {
     //Create path to the output file
     public static String moveToOutputFile(String nFile)
     {
+      //TODO: The directory of the location right before you want the output directory
+      //Ex. If I want the output directory in the parent folder of /M3 then I put /M3
+      //Note:
       int index = nFile.indexOf("/M3");
+      //TODO: (optional) replace /Output/ with whatever you want the output directory to be
+      //Note, this directory must exist before you run the program (use mkdir command in terminal)
       String indexPath = nFile.substring(0, index) + "/Output/" + nFile.substring(nFile.lastIndexOf('/'),nFile.indexOf(".m"))+".txt";
       return indexPath;
     }
@@ -131,6 +137,7 @@ public class ExtractText {
 
         //link to stop words: http://www.ranks.nl/stopwords
         TreeSet <String> ts = new TreeSet <String>();
+        //TODO: file location of stopwords
         BufferedReader brSet = new BufferedReader(new FileReader("/home/ott109/stopWords.txt"));
 
         BufferedReader brCheck = new BufferedReader(new FileReader(nFile));
