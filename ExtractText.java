@@ -117,7 +117,7 @@ public class ExtractText {
       //TODO: The directory of the location right before you want the output directory
       //Ex. If I want the output directory in the parent folder of /M3 then I put /M3
       //Note:
-      int index = nFile.indexOf("/M3");
+      int index = nFile.indexOf("/ott109");
       System.out.println("INDEX: " + index);
       //TODO: (optional) replace /Output/ with whatever you want the output directory to be
       //Note, this directory must exist before you run the program (use mkdir command in terminal)
