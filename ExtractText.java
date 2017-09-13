@@ -14,7 +14,7 @@ public class ExtractText {
     {
         //TODO: File path of the directory you want to parse
         System.out.println(new File(".").getCanonicalPath());
-        parseDir("home/ott109/M3");
+        parseDir("./M3");
     }
 
   public static void parseDir(String path) throws IOException
@@ -22,6 +22,7 @@ public class ExtractText {
       //list files in current directory
       File currentDir = new File(path);
       File[] contents = currentDir.listFiles();
+      System.out.print(contents);
       int numFilesInDir = contents.length;
 
       //iterate through files
@@ -117,6 +118,7 @@ public class ExtractText {
       //Ex. If I want the output directory in the parent folder of /M3 then I put /M3
       //Note:
       int index = nFile.indexOf("/M3");
+      System.out.println("INDEX: " + index);
       //TODO: (optional) replace /Output/ with whatever you want the output directory to be
       //Note, this directory must exist before you run the program (use mkdir command in terminal)
       String indexPath = nFile.substring(0, index) + "/Output/" + nFile.substring(nFile.lastIndexOf('/'),nFile.indexOf(".m"))+".txt";
