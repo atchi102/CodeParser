@@ -14,7 +14,7 @@ public class ExtractText {
     {
         //TODO: File path of the directory you want to parse
         System.out.println(new File(".").getCanonicalPath())
-        parseDir("./M3");
+        parseDir("home/ott109/M3");
     }
 
   public static void parseDir(String path) throws IOException
