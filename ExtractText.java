@@ -13,6 +13,7 @@ public class ExtractText {
     public static void main(String[] args) throws IOException
     {
         //TODO: File path of the directory you want to parse
+        System.out.println(new File(".").getCanonicalPath())
         parseDir("./M3");
     }
 
