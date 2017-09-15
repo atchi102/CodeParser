@@ -7,12 +7,12 @@ output_dir = sys.argv[2]
 f_content = ""
 
 for root, subdirs, files in os.walk(walk_dir):
-    list_file_path = os.path.join(root, 'my-directory-list.txt')
+        #list_file_path = os.path.join(root, 'my-directory-list.txt')
 
-    with open(list_file_path, 'wb') as list_file:
+        #with open(list_file_path, 'wb') as list_file:
 
         for filename in files:
-            if not filename.endswith(".java"):
+            if not filename.endswith(".cpp"):
                 continue
             file_path = os.path.join(root, filename)
 
