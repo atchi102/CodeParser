@@ -12,7 +12,7 @@ for root, subdirs, files in os.walk(walk_dir):
         #with open(list_file_path, 'wb') as list_file:
 
         for filename in files:
-            if not filename.endswith(".cpp"):
+            if not filename.endswith(".r"):
                 continue
             file_path = os.path.join(root, filename)
 
