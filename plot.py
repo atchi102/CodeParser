@@ -1,14 +1,17 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-
-n_groups = 6
-fileTypes = ['Rd','R','C','Cpp',
+n_groups = 8
+fileTypes = ['Rd','R','C/Cpp','H/Hpp','Txt','PDF',
             'Txt','M']
-means_men = [202887,163978+14342,11200,10070,
+all_files = [202887,163978+14342,11200+10070,18151+15039,90959,15912,
             230890, 187938]
 
-means_women = (25, 32, 34, 20)
+r = [0]*len(all_files)
+matlab = [0]*len(all_files)
+
+r[:-2] = all_files[:-2]
+matlab[-2:] = all_files[-2:]
 
 fig, ax = plt.subplots()
 
@@ -18,11 +21,16 @@ bar_width = 0.5
 opacity = 0.5
 error_config = {'ecolor': '0.3'}
 
-rects1 = plt.bar(index, means_men, bar_width,
+plt.bar(index,r, bar_width,
                  alpha=opacity,
-                 color=['r','r','r','r','b','b'],
+                 color='r',
                  error_kw=error_config,
-                 label='Men')
+                 label='R')
+plt.bar(index, matlab, bar_width,
+                 alpha=opacity,
+                 color='b',
+                 error_kw=error_config,
+                 label='MATLAB')
 
 plt.xlabel('File Type')
 plt.ylabel('Number of Files')
